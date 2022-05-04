@@ -87,3 +87,42 @@ h6 {
 }
 
 /*------------------------*/
+.wrapper {
+  width: 100vw;
+}
+
+.content {
+  margin: 0 auto;
+  max-width: 120rem;
+}
+
+.content__keyboard {
+  margin: 0 auto;
+  max-width: 64rem;
+  border: 2px solid #000;
+  padding: 0.625rem;
+  font-size: 1.25em;
+}
+
+.keyboard__keys {
+  max-width: 58.125rem;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-column-gap: 0.625rem;
+          column-gap: 0.625rem;
+  row-gap: 0.625rem;
+}
+
+.keyboard__key {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 6%;
+          flex: 0 0 6%;
+  max-width: 3.125rem;
+  height: 3.125rem;
+  border: 1px solid #000;
+  font-size: 0.875em;
+}
