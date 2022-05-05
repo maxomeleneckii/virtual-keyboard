@@ -6,6 +6,9 @@ $color-keyHover: rgb(90, 92, 94);
 $color-font: black;
 $font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 
+body {
+  font-family: $font-family;
+}
 .wrapper {
   width: 100vw;
   padding: rem(20);
@@ -20,9 +23,12 @@ $font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 
   &__area {
     max-width: rem(1024);
+    padding: rem(10);
     width: 100%;
     height: rem(180);
     border: 1px solid #000;
+    font-size: em(25);
+    resize: none;
   }
   &__keyboard {
     background: rgba(121, 114, 126, 0.438);
@@ -36,7 +42,6 @@ $font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .keyboard {
   &__keys {
-    font-family: $font-family;
     max-width: rem(930);
     margin: 0 auto;
     display: flex;
@@ -60,6 +65,10 @@ $font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
       box-shadow: 0px 0px 7px 5px $color-keyHover;
     }
     &:active {
+      transform: scale(85%);
+    }
+    &.active {
+      box-shadow: 0px 0px 7px 5px $color-keyHover;
       transform: scale(85%);
     }
   }
