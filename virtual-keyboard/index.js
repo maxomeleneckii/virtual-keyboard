@@ -82,6 +82,27 @@ const keyLayout = {
     '\\': '/',
   },
 };
+
+const specialKey = [
+  'Tab',
+  'CapsLock',
+  'ShiftLeft',
+  'ShiftRight',
+  'MetaLeft',
+  'AltLeft',
+  'AltRight',
+  'Space',
+  'ControlLeft',
+  'ControlRight',
+  'Enter',
+  'Delete',
+  'Backspace',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+];
+
 class Keyboard {
   constructor(color = 'grey') {
     this.wrapper;
@@ -117,10 +138,14 @@ class Keyboard {
       this.key = document.createElement('button');
       this.key.classList.add('keyboard__key');
       this.key.setAttribute('data-keyCode', `${key}`);
+      this.span = document.createElement('span');
+      this.span.classList.add('keyboard__key-main');
+      this.key.append(this.span);
       if (value === 'del' || value === 'enter') {
-        this.key.textContent = value.toUpperCase();
+        this.span.textContent = value.toUpperCase();
       } else {
-        this.key.textContent = value.slice(0, 1).toUpperCase() + value.slice(1);
+        this.span.textContent =
+          value.slice(0, 1).toUpperCase() + value.slice(1);
       }
       if (value === 'backspace' || value === 'caps lock' || value === 'shift') {
         this.key.style.flexBasis = 13 + '%';
@@ -139,16 +164,16 @@ class Keyboard {
         this.key.style.maxWidth = 5 + 'rem';
         this.key.style.background = this.color;
       } else if (value === 'arrowup') {
-        this.key.textContent = '';
+        this.span.textContent = '';
         this.key.classList.add('arrow__up', 'arrow');
       } else if (value === 'arrowdown') {
-        this.key.textContent = '';
+        this.span.textContent = '';
         this.key.classList.add('arrow__down', 'arrow');
       } else if (value === 'arrowleft') {
-        this.key.textContent = '';
+        this.span.textContent = '';
         this.key.classList.add('arrow__left', 'arrow');
       } else if (value === 'arrowright') {
-        this.key.textContent = '';
+        this.span.textContent = '';
         this.key.classList.add('arrow__right', 'arrow');
       } else if (
         value === '`' ||
@@ -165,6 +190,7 @@ class Keyboard {
         if (key2 === value) {
           this.span = document.createElement('span');
           this.span.classList.add('keyboard__key-aux');
+          this.key.classList.add('keyboard__key-special');
           this.span.textContent = value2;
           this.key.append(this.span);
         }
@@ -173,25 +199,6 @@ class Keyboard {
     return this.keys;
   }
 }
-const specialKey = [
-  'Tab',
-  'CapsLock',
-  'ShiftLeft',
-  'ShiftRight',
-  'MetaLeft',
-  'AltLeft',
-  'AltRight',
-  'Space',
-  'ControlLeft',
-  'ControlRight',
-  'Enter',
-  'Delete',
-  'Backspace',
-  'ArrowUp',
-  'ArrowDown',
-  'ArrowLeft',
-  'ArrowRight',
-];
 let wrapper = new Keyboard('rgb(101 104 106)');
 wrapper.createWrapper();
 
@@ -199,30 +206,74 @@ const textArea = document.querySelector('.content__area');
 const btnCaps = document.querySelector(
   '.keyboard__key[data-keycode="CapsLock"'
 );
+const btnShiftLeft = document.querySelector(
+  '.keyboard__key[data-keycode="ShiftLeft"'
+);
+const btnShiftRight = document.querySelector(
+  '.keyboard__key[data-keycode="ShiftRight"'
+);
 const btn = document.querySelectorAll('.keyboard__key');
+const btnSpecial = document.querySelectorAll(
+  '.keyboard__key-special > .keyboard__key-main'
+);
+const btnAux = document.querySelectorAll('.keyboard__key-aux');
 
 const writeArea = (item) => {
   let curPosCursor = textArea.selectionStart;
   const start = textArea.value.slice(0, curPosCursor);
   const end = textArea.value.slice(curPosCursor);
+
   for (let [key3, value3] of Object.entries(keyLayout.mainKey)) {
     if (btnCaps.classList.contains('active')) {
       value3 = value3.toUpperCase();
     }
-    if (key3 === item.dataset.keycode) {
-      if (!specialKey.includes(key3)) {
-        textArea.value = `${start}${value3}${end}`;
-        curPosCursor += 1;
+    if (
+      btnShiftLeft.classList.contains('active') ||
+      btnShiftRight.classList.contains('active')
+    ) {
+      if (btnCaps.classList.contains('active')) {
+        value3 = value3.toLowerCase();
+      } else {
+        value3 = value3.toUpperCase();
       }
+      // btnSpecial.forEach((el) => el.classList.add('active'));
+      // btnAux.forEach((el) => el.classList.add('active'));
+    }
+    if (key3 === item.dataset.keycode && !specialKey.includes(key3)) {
+      textArea.value = `${start}${value3}${end}`;
+      curPosCursor += 1;
+      // if(btnShiftLeft.classList.contains('active') ||
+      // btnShiftRight.classList.contains('active')) {
+      //   textArea.value = `${start}${value3}${end}`;
+      // curPosCursor += 1;
+      // }
     }
   }
   if (item.dataset.keycode === 'Tab') {
-    textArea.value += '    ';
+    textArea.value = `${start}    ${end}`;
+    curPosCursor += 4;
   } else if (item.dataset.keycode === 'Space') {
-    textArea.value += '  ';
+    textArea.value = `${start}  ${end}`;
+    curPosCursor += 2;
   } else if (item.dataset.keycode === 'Backspace') {
-    // textArea.value = textArea.value.slice(0, -1);
-    // console.log(textArea.value);
+    if (curPosCursor === 0) {
+    } else {
+      textArea.value = textArea.value.slice(0, curPosCursor - 1) + end;
+      curPosCursor -= 1;
+    }
+  } else if (item.dataset.keycode === 'Delete') {
+    textArea.value = start + textArea.value.slice(curPosCursor + 1);
+  } else if (item.dataset.keycode === 'Enter') {
+    textArea.value = `${start}\n${end}`;
+    curPosCursor += 1;
+  } else if (item.dataset.keycode === 'ArrowLeft') {
+    textArea.focus();
+    curPosCursor -= 1;
+  } else if (item.dataset.keycode === 'ArrowRight') {
+    textArea.focus();
+    curPosCursor += 1;
+  } else if (item.dataset.keycode === 'ArrowUp') {
+  } else if (item.dataset.keycode === 'ArrowDown') {
   }
   textArea.setSelectionRange(curPosCursor, curPosCursor);
 };

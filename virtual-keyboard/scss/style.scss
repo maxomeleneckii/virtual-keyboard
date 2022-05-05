@@ -72,11 +72,20 @@ body {
       transform: scale(85%);
     }
   }
+  &__key-main {
+    &.active {
+      visibility: hidden;
+    }
+  }
   &__key-aux {
     position: absolute;
     top: rem(3);
     left: rem(5);
     font-size: em(11);
+    &.active {
+      position: static;
+      font-size: em(16);
+    }
   }
 }
 .arrow {

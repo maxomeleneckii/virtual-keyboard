@@ -181,11 +181,20 @@ body {
           transform: scale(85%);
 }
 
+.keyboard__key-main.active {
+  visibility: hidden;
+}
+
 .keyboard__key-aux {
   position: absolute;
   top: 0.1875rem;
   left: 0.3125rem;
   font-size: 0.6875em;
+}
+
+.keyboard__key-aux.active {
+  position: static;
+  font-size: 1em;
 }
 
 .arrow__up {
