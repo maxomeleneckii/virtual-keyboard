@@ -74,7 +74,10 @@ body {
   }
   &__key-main {
     &.active {
-      visibility: hidden;
+      position: absolute;
+      top: rem(3);
+      left: rem(5);
+      font-size: em(11);
     }
   }
   &__key-aux {

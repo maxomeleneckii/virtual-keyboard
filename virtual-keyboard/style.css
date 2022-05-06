@@ -182,7 +182,10 @@ body {
 }
 
 .keyboard__key-main.active {
-  visibility: hidden;
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.3125rem;
+  font-size: 0.6875em;
 }
 
 .keyboard__key-aux {

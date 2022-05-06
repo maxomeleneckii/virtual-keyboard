@@ -50,8 +50,8 @@ const keyLayout = {
     KeyB: 'b',
     KeyN: 'n',
     KeyM: 'm',
-    Period: '.',
     Comma: ',',
+    Period: '.',
     Slash: '/',
     ArrowUp: 'arrowup',
     ShiftRight: 'shift ',
@@ -79,29 +79,36 @@ const keyLayout = {
     0: ')',
     '-': '_',
     '=': '+',
+    '[': '{',
+    ']': '}',
     '\\': '/',
+    ';': ':',
+    "'": '"',
+    "'": '"',
+    ',': '<',
+    '.': '>',
+    '/': '?',
   },
+  specialKey: [
+    'Tab',
+    'CapsLock',
+    'ShiftLeft',
+    'ShiftRight',
+    'MetaLeft',
+    'AltLeft',
+    'AltRight',
+    'Space',
+    'ControlLeft',
+    'ControlRight',
+    'Enter',
+    'Delete',
+    'Backspace',
+    'ArrowUp',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+  ],
 };
-
-const specialKey = [
-  'Tab',
-  'CapsLock',
-  'ShiftLeft',
-  'ShiftRight',
-  'MetaLeft',
-  'AltLeft',
-  'AltRight',
-  'Space',
-  'ControlLeft',
-  'ControlRight',
-  'Enter',
-  'Delete',
-  'Backspace',
-  'ArrowUp',
-  'ArrowDown',
-  'ArrowLeft',
-  'ArrowRight',
-];
 
 class Keyboard {
   constructor(color = 'grey') {
@@ -201,7 +208,6 @@ class Keyboard {
 }
 let wrapper = new Keyboard('rgb(101 104 106)');
 wrapper.createWrapper();
-
 const textArea = document.querySelector('.content__area');
 const btnCaps = document.querySelector(
   '.keyboard__key[data-keycode="CapsLock"'
@@ -231,22 +237,27 @@ const writeArea = (item) => {
       btnShiftLeft.classList.contains('active') ||
       btnShiftRight.classList.contains('active')
     ) {
-      if (btnCaps.classList.contains('active')) {
-        value3 = value3.toLowerCase();
-      } else {
-        value3 = value3.toUpperCase();
-      }
-      // btnSpecial.forEach((el) => el.classList.add('active'));
-      // btnAux.forEach((el) => el.classList.add('active'));
+      btnSpecial.forEach((el) => el.classList.add('active'));
+      btnAux.forEach((el) => el.classList.add('active'));
     }
-    if (key3 === item.dataset.keycode && !specialKey.includes(key3)) {
+    if (key3 === item.dataset.keycode && !keyLayout.specialKey.includes(key3)) {
+      if (
+        btnShiftLeft.classList.contains('active') ||
+        btnShiftRight.classList.contains('active')
+      ) {
+        if (btnCaps.classList.contains('active')) {
+          value3 = value3.toLowerCase();
+        } else {
+          value3 = value3.toUpperCase();
+        }
+        for (let [key4, value4] of Object.entries(keyLayout.auxiliarySymbols)) {
+          if (key4 === value3) {
+            value3 = value4;
+          }
+        }
+      }
       textArea.value = `${start}${value3}${end}`;
       curPosCursor += 1;
-      // if(btnShiftLeft.classList.contains('active') ||
-      // btnShiftRight.classList.contains('active')) {
-      //   textArea.value = `${start}${value3}${end}`;
-      // curPosCursor += 1;
-      // }
     }
   }
   if (item.dataset.keycode === 'Tab') {
@@ -290,7 +301,7 @@ const eventKeyAdd = (event) => {
     if (event.code === el.dataset.keycode && event.code !== 'CapsLock') {
       event.preventDefault();
       el.classList.add('active');
-      writeArea(el, event);
+      writeArea(el);
     }
   });
 };
@@ -300,6 +311,13 @@ const eventKeyRemove = (event) => {
       el.classList.remove('active');
     }
   });
+  if (
+    !btnShiftLeft.classList.contains('active') ||
+    !btnShiftRight.classList.contains('active')
+  ) {
+    btnSpecial.forEach((el) => el.classList.remove('active'));
+    btnAux.forEach((el) => el.classList.remove('active'));
+  }
 };
 
 document.addEventListener('keydown', (event) => {
