@@ -181,11 +181,20 @@ body {
           transform: scale(85%);
 }
 
-.keyboard__key-main.active {
+.keyboard__key.active-up {
+  text-transform: uppercase;
+}
+
+.keyboard__key-main.active-special {
   position: absolute;
   top: 0.1875rem;
   left: 0.3125rem;
   font-size: 0.6875em;
+  text-transform: lowercase;
+}
+
+.keyboard__key-main.active-Upspecial {
+  text-transform: uppercase;
 }
 
 .keyboard__key-aux {
@@ -195,9 +204,13 @@ body {
   font-size: 0.6875em;
 }
 
-.keyboard__key-aux.active {
+.keyboard__key-aux.active-special {
   position: static;
   font-size: 1em;
+}
+
+.keyboard__key-aux.active-Upspecial {
+  text-transform: lowercase;
 }
 
 .arrow__up {

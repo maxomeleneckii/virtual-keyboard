@@ -71,13 +71,20 @@ body {
       box-shadow: 0px 0px 7px 5px $color-keyHover;
       transform: scale(85%);
     }
+    &.active-up {
+      text-transform: uppercase;
+    }
   }
   &__key-main {
-    &.active {
+    &.active-special {
       position: absolute;
       top: rem(3);
       left: rem(5);
       font-size: em(11);
+      text-transform: lowercase;
+    }
+    &.active-Upspecial {
+      text-transform: uppercase;
     }
   }
   &__key-aux {
@@ -85,9 +92,12 @@ body {
     top: rem(3);
     left: rem(5);
     font-size: em(11);
-    &.active {
+    &.active-special {
       position: static;
       font-size: em(16);
+    }
+    &.active-Upspecial {
+      text-transform: lowercase;
     }
   }
 }
