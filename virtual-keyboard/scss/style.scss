@@ -9,6 +9,7 @@ $font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 body {
   font-family: $font-family;
   padding-top: rem(10);
+  overflow-x: hidden;
 }
 .header {
   &__heading {
@@ -133,10 +134,12 @@ body {
   display: flex;
   align-items: center;
   &__short {
+    width: 25px;
     margin-left: em(10);
     background: rgb(219, 216, 216);
     cursor: pointer;
     border-radius: 10px;
     padding: em(4);
+    text-align: center;
   }
 }

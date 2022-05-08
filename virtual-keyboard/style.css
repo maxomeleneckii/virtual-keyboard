@@ -90,6 +90,7 @@ h6 {
 body {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   padding-top: 0.625rem;
+  overflow-x: hidden;
 }
 
 .header__heading {
@@ -259,9 +260,11 @@ body {
 }
 
 .lang__short {
+  width: 25px;
   margin-left: 0.625em;
   background: #dbd8d8;
   cursor: pointer;
   border-radius: 10px;
   padding: 0.25em;
+  text-align: center;
 }
