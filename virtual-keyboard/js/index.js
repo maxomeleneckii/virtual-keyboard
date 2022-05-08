@@ -439,12 +439,14 @@ document.addEventListener('keyup', (event) => {
   eventKeyRemove(event.code);
 });
 keyboard.addEventListener('click', (event) => {
+  textArea.focus();
   const itm = event.target.closest('.keyboard__key');
   if (!itm) return;
   if (!keyboard.contains(itm)) return;
   eventKeyAdd(event, itm.dataset.keycode);
 });
 keyboard.addEventListener('click', (event) => {
+  textArea.focus();
   const itm = event.target.closest('.keyboard__key');
   if (!itm) return;
   if (!keyboard.contains(itm)) return;
