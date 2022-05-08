@@ -126,8 +126,6 @@ const changeLanguage = (objMain, objAux) => {
       el.children[0].textContent = objMain[valueData].toString();
     }
   });
-  lang = 'ru';
-  setLocalStorage();
 };
 
 const writeArea = (item, obj, obj2) => {
@@ -267,9 +265,13 @@ const eventKeyAdd = (event, eventCode) => {
   if (event.altKey && event.ctrlKey && !flag) {
     changeLanguage(keys.ru, auxKeys.ru);
     flag = true;
+    lang = 'ru';
+    setLocalStorage();
   } else if (event.altKey && event.ctrlKey) {
     changeLanguage(keys.en, auxKeys.en);
     flag = false;
+    lang = 'en';
+    setLocalStorage();
   }
   if (eventCode === 'CapsLock' && !flagCaps) {
     btn.forEach((el) => {
@@ -370,6 +372,9 @@ let lang = 'en';
 const getLocalStorage = () => {
   if (localStorage.getItem('lang') === null) {
     setLocalStorage();
+  }
+  if (localStorage.getItem('lang') === 'ru') {
+    changeLanguage(keys.ru, auxKeys.ru);
   }
 };
 window.addEventListener('load', getLocalStorage);
