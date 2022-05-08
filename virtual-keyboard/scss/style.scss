@@ -8,6 +8,14 @@ $font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 
 body {
   font-family: $font-family;
+  padding-top: rem(10);
+}
+.header {
+  &__heading {
+    text-align: center;
+    font-size: em(30);
+    color: black;
+  }
 }
 .wrapper {
   width: 100vw;
@@ -19,13 +27,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: rem(30);
+  row-gap: rem(20);
 
   &__area {
     max-width: rem(1024);
     padding: rem(20);
     width: 100%;
-    height: rem(180);
+    height: rem(130);
     border: 1px solid #000;
     font-size: em(25);
     resize: none;
@@ -114,5 +122,21 @@ body {
   }
   &__right {
     background: (url(assets/svg/arrow-right.svg) center/50% no-repeat), $color-key;
+  }
+}
+.content__info {
+  display: flex;
+  flex-direction: column;
+  row-gap: rem(10);
+}
+.lang {
+  display: flex;
+  align-items: center;
+  &__short {
+    margin-left: em(10);
+    background: rgb(219, 216, 216);
+    cursor: pointer;
+    border-radius: 10px;
+    padding: em(4);
   }
 }

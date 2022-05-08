@@ -1,23 +1,46 @@
 /*Import==============================================================*/
 import { keys, auxKeys, specialKeys } from './js/data.js';
 class Keyboard {
-  constructor(color = 'grey') {
+  constructor() {
     this.keys;
-    this.color = color;
+    this.color = 'rgb(101 104 106)';
+    this.headerText = 'Virtual Keyboard';
+    this.operSystem = 'Windows';
   }
 
   createWrapper() {
-    const wrapper = document.createElement('div');
+    const header = document.createElement('header');
+    header.classList.add('header');
+    const heading = document.createElement('h1');
+    heading.classList.add('header__heading');
+    heading.textContent = this.headerText;
+    header.append(heading);
+    document.body.prepend(header);
+    const wrapper = document.createElement('main');
     wrapper.classList.add('wrapper');
-    document.body.append(wrapper);
+    header.after(wrapper);
     const content = document.createElement('div');
     content.classList.add('content');
     wrapper.append(content);
     const keyboard = document.createElement('div');
     const textarea = document.createElement('textarea');
+    const info = document.createElement('div');
+    const operSys = document.createElement('p');
+    const language = document.createElement('div');
+    const languageCapter = document.createElement('h2');
+    const languageShort = document.createElement('span');
     keyboard.classList.add('content__keyboard', 'keyboard');
     textarea.classList.add('content__area');
-    content.append(textarea, keyboard);
+    info.classList.add('content__info', 'info');
+    language.classList.add('info__lang', 'lang');
+    languageShort.classList.add('lang__short');
+    languageShort.textContent = 'en';
+    operSys.textContent = `The keyboard is made for the OS ${this.operSystem}`;
+    languageCapter.textContent =
+      'Language (Click on the language icon or press on the keyboard "Ctrl + Alt"):';
+    language.append(languageCapter, languageShort);
+    info.append(operSys, language);
+    content.append(textarea, keyboard, info);
     this.keys = document.createElement('div');
     this.keys.classList.add('keyboard__keys');
     keyboard.append(this.createKeys(keys.en));
@@ -93,11 +116,12 @@ class Keyboard {
     return this.keys;
   }
 }
-let wrapper = new Keyboard('rgb(101 104 106)');
+let wrapper = new Keyboard();
 wrapper.createWrapper();
 
 /*Var=======================================*/
 const textArea = document.querySelector('.content__area');
+const langShort = document.querySelector('.lang__short');
 const btnCaps = document.querySelector(
   '.keyboard__key[data-keycode="CapsLock"'
 );
@@ -266,11 +290,13 @@ const eventKeyAdd = (event, eventCode) => {
     changeLanguage(keys.ru, auxKeys.ru);
     flag = true;
     lang = 'ru';
+    langShort.textContent = lang;
     setLocalStorage();
   } else if (event.altKey && event.ctrlKey) {
     changeLanguage(keys.en, auxKeys.en);
     flag = false;
     lang = 'en';
+    langShort.textContent = lang;
     setLocalStorage();
   }
   if (eventCode === 'CapsLock' && !flagCaps) {
@@ -375,6 +401,8 @@ const getLocalStorage = () => {
   }
   if (localStorage.getItem('lang') === 'ru') {
     changeLanguage(keys.ru, auxKeys.ru);
+    flag = true;
+    langShort.textContent = 'ru';
   }
 };
 window.addEventListener('load', getLocalStorage);
@@ -403,4 +431,19 @@ keyboard.addEventListener('click', (event) => {
   if (!itm) return;
   if (!keyboard.contains(itm)) return;
   eventKeyRemove(itm.dataset.keycode);
+});
+langShort.addEventListener('click', () => {
+  if (flag === false) {
+    changeLanguage(keys.ru, auxKeys.ru);
+    flag = true;
+    lang = 'ru';
+    langShort.textContent = lang;
+    setLocalStorage();
+  } else {
+    changeLanguage(keys.en, auxKeys.en);
+    flag = false;
+    lang = 'en';
+    langShort.textContent = lang;
+    setLocalStorage();
+  }
 });
