@@ -1,1 +1,1 @@
-https://maxomeleneckii.github.io/Virtual-Keyboard
+https://maxomeleneckii.github.io/Virtual-Keyboard/virtual-keyboard
