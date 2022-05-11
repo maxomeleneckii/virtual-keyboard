@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 // eslint-disable-next-line import/extensions
 import { keys, auxKeys, specialKeys } from './data.js';
 
@@ -6,8 +5,7 @@ import { keys, auxKeys, specialKeys } from './data.js';
 
 class Keyboard {
   constructor() {
-    // eslint-disable-next-line no-unused-expressions
-    this.keys;
+    this.keys = null;
     this.color = 'rgb(101 104 106)';
     this.headerText = 'Virtual Keyboard';
     this.operSystem = 'Windows';
@@ -51,7 +49,7 @@ class Keyboard {
   }
 
   createKeys(obj) {
-    for (const [key1, value] of Object.entries(obj)) {
+    Object.getOwnPropertyNames(obj).forEach((key1) => {
       const key = document.createElement('button');
       key.classList.add('keyboard__key');
       key.setAttribute('data-keyCode', `${key1}`);
@@ -59,64 +57,55 @@ class Keyboard {
       mainText.classList.add('keyboard__key-main');
       key.append(mainText);
       if (
-        value === 'del'
-        || value === 'enter'
-        || value === 'backspace'
-        || value === 'tab'
+        obj[key1] === 'del' || obj[key1] === 'enter' || obj[key1] === 'backspace' || obj[key1] === 'tab'
       ) {
-        mainText.textContent = value.slice(0, 1).toUpperCase() + value.slice(1);
+        mainText.textContent = obj[key1].slice(0, 1).toUpperCase() + obj[key1].slice(1);
       } else {
-        mainText.textContent = value;
+        mainText.textContent = obj[key1];
       }
-      if (value === 'backspace' || value === 'caps lock' || value === 'shift') {
+      if (obj[key1] === 'backspace' || obj[key1] === 'caps lock' || obj[key1] === 'shift') {
         key.style.flexBasis = `${13}%`;
         key.style.maxWidth = `${10}rem`;
         key.style.background = this.color;
-      } else if (value === 'enter') {
+      } else if (obj[key1] === 'enter') {
         key.style.flexBasis = `${11}%`;
         key.style.maxWidth = `${7}rem`;
         key.style.background = this.color;
-      } else if (value === 'space') {
+      } else if (obj[key1] === 'space') {
         key.style.flexGrow = 1;
         key.style.maxWidth = `${37}%`;
         key.textContent = '';
-      } else if (value === 'ctrl') {
+      } else if (obj[key1] === 'ctrl') {
         key.style.flexBasis = `${8}%`;
         key.style.maxWidth = `${5}rem`;
         key.style.background = this.color;
-      } else if (value === 'arrowup') {
+      } else if (obj[key1] === 'arrowup') {
         mainText.textContent = '';
         key.classList.add('arrow__up', 'arrow');
-      } else if (value === 'arrowdown') {
+      } else if (obj[key1] === 'arrowdown') {
         mainText.textContent = '';
         key.classList.add('arrow__down', 'arrow');
-      } else if (value === 'arrowleft') {
+      } else if (obj[key1] === 'arrowleft') {
         mainText.textContent = '';
         key.classList.add('arrow__left', 'arrow');
-      } else if (value === 'arrowright') {
+      } else if (obj[key1] === 'arrowright') {
         mainText.textContent = '';
         key.classList.add('arrow__right', 'arrow');
-      } else if (
-        value === '`'
-        || value === 'tab'
-        || value === 'win'
-        || value === 'alt'
-        || value === 'del'
-        || value === 'shift '
+      } else if (obj[key1] === '`' || obj[key1] === 'tab' || obj[key1] === 'win' || obj[key1] === 'alt' || obj[key1] === 'del' || obj[key1] === 'shift '
       ) {
         key.style.background = this.color;
       }
       this.keys.append(key);
-      for (const [key2, value2] of Object.entries(auxKeys.en)) {
+      Object.getOwnPropertyNames(auxKeys.en).forEach((key2) => {
         if (key2 === key1) {
           const auxText = document.createElement('span');
           auxText.classList.add('keyboard__key-aux');
           key.classList.add('keyboard__key-special');
-          auxText.textContent = value2;
+          auxText.textContent = auxKeys.en[key2];
           key.append(auxText);
         }
-      }
-    }
+      });
+    });
     return this.keys;
   }
 }
@@ -127,19 +116,11 @@ wrapper.createWrapper();
 
 const textArea = document.querySelector('.content__area');
 const langShort = document.querySelector('.lang__short');
-const btnCaps = document.querySelector(
-  '.keyboard__key[data-keycode="CapsLock"',
-);
-const btnShiftLeft = document.querySelector(
-  '.keyboard__key[data-keycode="ShiftLeft"',
-);
-const btnShiftRight = document.querySelector(
-  '.keyboard__key[data-keycode="ShiftRight"',
-);
+const btnCaps = document.querySelector('.keyboard__key[data-keycode="CapsLock"');
+const btnShiftLeft = document.querySelector('.keyboard__key[data-keycode="ShiftLeft"');
+const btnShiftRight = document.querySelector('.keyboard__key[data-keycode="ShiftRight"');
 const btn = document.querySelectorAll('.keyboard__key');
-const btnSpecial = document.querySelectorAll(
-  '.keyboard__key-special > .keyboard__key-main',
-);
+const btnSpecial = document.querySelectorAll('.keyboard__key-special > .keyboard__key-main');
 const btnAux = document.querySelectorAll('.keyboard__key-aux');
 const keyboard = document.querySelector('.content__keyboard');
 let flag = false;
@@ -151,17 +132,16 @@ let lang = 'en';
 const changeLanguage = (objMain, objAux) => {
   const transAtr = document.querySelectorAll('[data-keycode]');
   transAtr.forEach((el) => {
+    const element = el;
     const valueData = el.dataset.keycode;
     const valueDataSpecial = el.classList.contains('keyboard__key-special');
     if (specialKeys.specialKey.includes(valueData)) {
-      /* empty */
+      // Next iteration
     } else {
       if (valueDataSpecial === true) {
-        // eslint-disable-next-line no-param-reassign
-        el.children[1].textContent = objAux[valueData].toString();
+        element.children[1].textContent = objAux[valueData].toString();
       }
-      // eslint-disable-next-line no-param-reassign
-      el.children[0].textContent = objMain[valueData].toString();
+      element.children[0].textContent = objMain[valueData].toString();
     }
   });
 };
@@ -191,25 +171,15 @@ const writeArea = (item, obj, obj2) => {
   const end = textArea.value.slice(curPosCursor);
   let val;
   const elementVal = item.dataset.keycode;
-  if (
-    btnCaps.classList.contains('active')
-    && !specialKeys.specialKey.includes(elementVal)
-  ) {
-    if (
-      btnShiftLeft.classList.contains('active')
-      || btnShiftRight.classList.contains('active')
-    ) {
+  if (btnCaps.classList.contains('active') && !specialKeys.specialKey.includes(elementVal)) {
+    if (btnShiftLeft.classList.contains('active') || btnShiftRight.classList.contains('active')) {
       val = obj[elementVal].toLowerCase();
     } else {
       val = obj[elementVal].toUpperCase();
     }
-  } else if (
-    !btnCaps.classList.contains('active')
-    && !specialKeys.specialKey.includes(elementVal)
-  ) {
+  } else if (!btnCaps.classList.contains('active') && !specialKeys.specialKey.includes(elementVal)) {
     if (
-      btnShiftLeft.classList.contains('active')
-      || btnShiftRight.classList.contains('active')
+      btnShiftLeft.classList.contains('active') || btnShiftRight.classList.contains('active')
     ) {
       val = obj[elementVal].toUpperCase();
     } else {
@@ -217,21 +187,17 @@ const writeArea = (item, obj, obj2) => {
     }
   }
   if (
-    elementVal === item.dataset.keycode
-    && !specialKeys.specialKey.includes(elementVal)
+    elementVal === item.dataset.keycode && !specialKeys.specialKey.includes(elementVal)
   ) {
     if (
-      btnShiftLeft.classList.contains('active')
-      || btnShiftRight.classList.contains('active')
+      btnShiftLeft.classList.contains('active') || btnShiftRight.classList.contains('active')
     ) {
       if (
-        item.classList.contains('keyboard__key-special')
-        && btnCaps.classList.contains('active')
+        item.classList.contains('keyboard__key-special') && btnCaps.classList.contains('active')
       ) {
         val = obj2[elementVal].toLowerCase();
       } else if (
-        item.classList.contains('keyboard__key-special')
-        && !btnCaps.classList.contains('active')
+        item.classList.contains('keyboard__key-special') && !btnCaps.classList.contains('active')
       ) {
         val = obj2[elementVal];
       }
@@ -247,7 +213,7 @@ const writeArea = (item, obj, obj2) => {
     curPosCursor += 2;
   } else if (item.dataset.keycode === 'Backspace') {
     if (curPosCursor === 0) {
-      /* empty */
+      // Next iteration
     } else {
       textArea.value = textArea.value.slice(0, curPosCursor - 1) + end;
       curPosCursor -= 1;
@@ -269,8 +235,7 @@ const writeArea = (item, obj, obj2) => {
     if (before.length === 1 || before[before.length - 1].length >= 75) {
       curPosCursor -= 75;
     } else if (
-      before[before.length - 1].length
-      <= before[before.length - 2].length % 75
+      before[before.length - 1].length <= before[before.length - 2].length % 75
     ) {
       curPosCursor -= (before[before.length - 2].length % 75) + 1;
     } else {
@@ -289,8 +254,7 @@ const writeArea = (item, obj, obj2) => {
     } else if (before[before.length - 1].length + after[0].length > 75) {
       curPosCursor += after[0].length;
     } else {
-      curPosCursor
-        += (before[before.length - 1].length % 75) + after[0].length + 1;
+      curPosCursor += (before[before.length - 1].length % 75) + after[0].length + 1;
     }
   }
   textArea.setSelectionRange(curPosCursor, curPosCursor);
@@ -357,12 +321,11 @@ const eventKeyAdd = (event, eventCode) => {
     flagCaps = false;
   }
   if (
-    btnShiftLeft.classList.contains('active')
-    || btnShiftRight.classList.contains('active')
+    btnShiftLeft.classList.contains('active') || btnShiftRight.classList.contains('active')
   ) {
     btnSpecial.forEach((el) => {
       if (!btnCaps.classList.contains('active')) {
-        /* empty */
+        // Next iteration
       } else {
         el.classList.add('active-Upspecial');
       }
@@ -370,7 +333,7 @@ const eventKeyAdd = (event, eventCode) => {
     });
     btnAux.forEach((el) => {
       if (!btnCaps.classList.contains('active')) {
-        /* empty */
+        // Next iteration
       } else {
         el.classList.add('active-Upspecial');
       }
@@ -378,12 +341,11 @@ const eventKeyAdd = (event, eventCode) => {
     });
     btn.forEach((el) => {
       if (
-        !specialKeys.specialKey.includes(el.dataset.keycode)
-        && !btnCaps.classList.contains('active')
+        !specialKeys.specialKey.includes(el.dataset.keycode) && !btnCaps.classList.contains('active')
       ) {
         el.classList.add('active-up');
       } else {
-        /* empty */
+        // Next iteration
       }
     });
   }
@@ -391,8 +353,7 @@ const eventKeyAdd = (event, eventCode) => {
     if (eventCode === 'ShiftLeft' || eventCode === 'ShiftRight') {
       btn.forEach((el) => {
         if (
-          !specialKeys.specialKey.includes(el.dataset.keycode)
-          && !el.classList.contains('keyboard__key-special')
+          !specialKeys.specialKey.includes(el.dataset.keycode) && !el.classList.contains('keyboard__key-special')
         ) {
           el.children[0].classList.remove('active-Upspecial');
         }
@@ -410,10 +371,9 @@ const eventKeyRemove = (eventCode) => {
     }
   });
   if (
-    btnShiftLeft.classList.contains('active')
-    || btnShiftRight.classList.contains('active')
+    btnShiftLeft.classList.contains('active') || btnShiftRight.classList.contains('active')
   ) {
-    /* empty */
+    // Next iteration
   } else {
     btnSpecial.forEach((el) => el.classList.remove('active-special'));
     btnAux.forEach((el) => el.classList.remove('active-special'));
