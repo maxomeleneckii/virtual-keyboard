@@ -135,9 +135,7 @@ const changeLanguage = (objMain, objAux) => {
     const element = el;
     const valueData = el.dataset.keycode;
     const valueDataSpecial = el.classList.contains('keyboard__key-special');
-    if (specialKeys.specialKey.includes(valueData)) {
-      // Next iteration
-    } else {
+    if (!specialKeys.specialKey.includes(valueData)) {
       if (valueDataSpecial === true) {
         element.children[1].textContent = objAux[valueData].toString();
       }
@@ -212,9 +210,7 @@ const writeArea = (item, obj, obj2) => {
     textArea.value = `${start}  ${end}`;
     curPosCursor += 2;
   } else if (item.dataset.keycode === 'Backspace') {
-    if (curPosCursor === 0) {
-      // Next iteration
-    } else {
+    if (curPosCursor !== 0) {
       textArea.value = textArea.value.slice(0, curPosCursor - 1) + end;
       curPosCursor -= 1;
     }
@@ -324,17 +320,13 @@ const eventKeyAdd = (event, eventCode) => {
     btnShiftLeft.classList.contains('active') || btnShiftRight.classList.contains('active')
   ) {
     btnSpecial.forEach((el) => {
-      if (!btnCaps.classList.contains('active')) {
-        // Next iteration
-      } else {
+      if (btnCaps.classList.contains('active')) {
         el.classList.add('active-Upspecial');
       }
       el.classList.add('active-special');
     });
     btnAux.forEach((el) => {
-      if (!btnCaps.classList.contains('active')) {
-        // Next iteration
-      } else {
+      if (btnCaps.classList.contains('active')) {
         el.classList.add('active-Upspecial');
       }
       el.classList.add('active-special');
@@ -344,8 +336,6 @@ const eventKeyAdd = (event, eventCode) => {
         !specialKeys.specialKey.includes(el.dataset.keycode) && !btnCaps.classList.contains('active')
       ) {
         el.classList.add('active-up');
-      } else {
-        // Next iteration
       }
     });
   }
